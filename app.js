@@ -1,4 +1,4 @@
-require("dotenv").config()
+require("dotenv").config();
 require("express-async-errors");
 
 const express = require("express");
@@ -7,32 +7,26 @@ const app = express();
 // Middleware
 app.use(express.json());
 
-
-// Database 
+// Database
 const connectDB = require("./db/connect");
-
 
 // Authorization
 const authenticateUser = require("./middleware/authentication");
 
 // routers
 const authRouter = require("./routes/auth");
-
-
-
+const userInfoRouter = require("./routes/userInfo");
 
 // routes
 app.use("/api/auth", authRouter);
-
+app.use("/api", authenticateUser, userInfoRouter);
 
 // error handler
 const errorHandlerMiddleware = require("./middleware/error-handler");
 
-
 app.get("/", (req, res) => {
   res.status(200).send("DocIt is running!");
 });
-
 
 app.use(errorHandlerMiddleware);
 
