@@ -1,14 +1,52 @@
+require("dotenv").config()
+require("express-async-errors");
+
 const express = require("express");
 const app = express();
 
 // Middleware
 app.use(express.json());
 
+
+// Database 
+const connectDB = require("./db/connect");
+
+
+// Authorization
+const authenticateUser = require("./middleware/authentication");
+
+// routers
+const authRouter = require("./routes/auth");
+
+
+
+
+// routes
+app.use("/api/auth", authRouter);
+
+
+// error handler
+const errorHandlerMiddleware = require("./middleware/error-handler");
+
+
 app.get("/", (req, res) => {
   res.status(200).send("DocIt is running!");
 });
 
-app.listen(3000, () => {
-  console.log("Started on port 3000");
-});
- // hey there 
+
+app.use(errorHandlerMiddleware);
+
+const port = process.env.PORT || 3000;
+
+const start = async () => {
+  try {
+    await connectDB(process.env.MONGO_URI);
+    app.listen(port, () =>
+      console.log(`Server is listening on port ${port}...`)
+    );
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+start();
