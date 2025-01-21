@@ -4,14 +4,23 @@ const Schema = mongoose.Schema;
 const formSchema = new Schema({
   attachments: [
     {
+      fileNumber: { type: Number, required: true }, 
       filename: { type: String, required: true },
       path: { type: String, required: true },
     },
   ],
-  track: { type: String, required: true }, // Track associated with the form
-  traineeId: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }, // Reference to the trainee who submitted
-  status: { type: String, default: 'Pending' }, // e.g., Pending, Approved, Rejected
-  supervisorComments: { type: String }, // Comments from the supervisor
+  traineeInfo: {
+    name: {type: String, required: true},
+    track: {type: String, required: true},
+    major: {type: String, required: true},
+    nationalId: {type: Number, required: true},
+    gender: {type: String, required: true},
+    email: {type: String, required: true},
+    phoneNumber: {type: Number, required: true},
+  },
+  traineeId: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }, 
+  status: { type: String, default: 'Pending' },
+  supervisorComments: { type: String }, 
 });
 
 module.exports = mongoose.model('Form', formSchema);

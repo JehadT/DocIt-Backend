@@ -7,6 +7,7 @@ const app = express();
 // Middleware
 app.use(express.json());
 
+
 // Database
 const connectDB = require("./db/connect");
 
@@ -21,7 +22,7 @@ const formRouter = require("./routes/forms");
 // routes
 app.use("/api/auth", authRouter);
 app.use("/api", authenticateUser, userInfoRouter);
-app.use("/api/forms", authenticateUser, formRouter);
+app.use("/api", authenticateUser, formRouter);
 
 // error handler
 const errorHandlerMiddleware = require("./middleware/error-handler");

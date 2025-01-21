@@ -1,24 +1,27 @@
 const Form = require("../models/Form");
+const User = require("../models/User");
 
 const forms = async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No files were uploaded" });
     }
-    const { track, traineeId } = req.body;
-    const files = req.files.map((file) => ({
+    const user = await User.findById(req.user.userId).select(
+      "-password -userType -_id -__v"
+    );
+    const traineeId = req.user.userId;
+    const files = req.files.map((file, index) => ({
+      fileNumber: index + 1,
       filename: file.filename,
       path: file.path,
     }));
 
-    // Create a new form with the uploaded files
-    const newForm = new Form({
+    const newForm = await Form.create({
       attachments: files,
-      track,
+      traineeInfo: user,
       traineeId,
     });
 
-    await newForm.save();
     res
       .status(201)
       .json({ message: "Form submitted successfully", form: newForm });
