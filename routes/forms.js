@@ -1,9 +1,11 @@
 const express = require("express");
 const router = express.Router();
 
-const { forms } = require("../controllers/forms");
+const { createForm } = require("../controllers/forms");
+const verifyTrainee = require('../middleware/verifyTrainee')
 const upload = require("../middleware/upload");
 
-router.post("/upload", upload, forms);
+
+router.post("/upload", verifyTrainee, upload, createForm);
 
 module.exports = router;

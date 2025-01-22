@@ -1,13 +1,13 @@
 const Form = require("../models/Form");
 const User = require("../models/User");
 
-const forms = async (req, res) => {
+const createForm = async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No files were uploaded" });
     }
     const user = await User.findById(req.user.userId).select(
-      "-password -userType -_id -__v"
+      "-password -_id -__v"
     );
     const traineeId = req.user.userId;
     const files = req.files.map((file, index) => ({
@@ -30,4 +30,4 @@ const forms = async (req, res) => {
   }
 };
 
-module.exports = { forms };
+module.exports = { createForm };
