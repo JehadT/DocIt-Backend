@@ -1,5 +1,4 @@
 const { NotFoundError } = require("../errors/not-found");
-const { param } = require("express/lib/router");
 const Form = require("../models/Form");
 const { StatusCodes } = require("http-status-codes");
 
@@ -53,4 +52,50 @@ const getForm = async (req, res) => {
   }
   res.status(StatusCodes.OK).json(form);
 };
-module.exports = { createForm, getAllForms, getForm };
+
+const declineForm = async (req, res) => {
+  const {
+    params: { id: formId },
+  } = req;
+  try {
+    await Form.findByIdAndUpdate({ _id: formId }, { status: "Declined" });
+    res.status(StatusCodes.OK).json({ msg: "Form updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const approveForm = async (req, res) => {
+  const {
+    params: { id: formId },
+  } = req;
+  try {
+    await Form.findByIdAndUpdate({ _id: formId }, { status: "Approved" });
+    res.status(StatusCodes.OK).json({ msg: "Form updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+const returnForm = async (req, res) => {
+  const {
+    params: { id: formId },
+    body: { supervisorComments: supervisorComments },
+  } = req;
+  try {
+    await Form.findByIdAndUpdate(
+      { _id: formId },
+      { status: "Returned", supervisorComments: supervisorComments }
+    );
+    res.status(StatusCodes.OK).json({ msg: "Form updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = {
+  createForm,
+  getAllForms,
+  getForm,
+  declineForm,
+  approveForm,
+  returnForm,
+};
