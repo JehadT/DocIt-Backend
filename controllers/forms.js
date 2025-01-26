@@ -1,15 +1,12 @@
 const Form = require("../models/Form");
-const User = require("../models/User");
 
 const createForm = async (req, res) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ error: "No files were uploaded" });
     }
-    const user = await User.findById(req.user.userId).select(
-      "-password -_id -__v"
-    );
-    const traineeId = req.user.userId;
+    const track = req.user.track;
+    const trainee = req.user.userId;
     const files = req.files.map((file, index) => ({
       fileNumber: index + 1,
       filename: file.filename,
@@ -18,8 +15,8 @@ const createForm = async (req, res) => {
 
     const newForm = await Form.create({
       attachments: files,
-      traineeInfo: user,
-      traineeId,
+      trainee,
+      track,
     });
 
     res
@@ -30,4 +27,17 @@ const createForm = async (req, res) => {
   }
 };
 
-module.exports = { createForm };
+const getAllForms = async (req, res) => {
+  try {
+    const track = req.user.track;
+    const forms = await Form.find({ track: track }).populate(
+      "trainee",
+      "-__v -password -userType"
+    );
+    res.status(200).json({ forms });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { createForm, getAllForms };

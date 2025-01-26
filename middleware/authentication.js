@@ -13,6 +13,7 @@ const auth = async (req, res, next) => {
       userId: payload.userId,
       name: payload.name,
       userType: payload.userType,
+      track: payload.track,
     };
     next();
   } catch (error) {

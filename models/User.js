@@ -65,6 +65,7 @@ UserSchema.methods.createJWT = function () {
       userId: this._id,
       name: this.name,
       userType: this.userType,
+      track: this.track
     },
     process.env.JWT_SECRET_USER,
     {

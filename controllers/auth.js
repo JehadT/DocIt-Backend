@@ -21,22 +21,20 @@ const login = async (req, res) => {
     throw new UnauthenticatedError("Invalid Credentials");
   }
   const token = user.createJWT();
-  res
-    .status(StatusCodes.OK)
-    .json({
-      user: {
-        userType: user.userType,
-        email: user.email,
-        name: user.name,
-        track: user.track,
-        phoneNumber: user.phoneNumber,
-        nationalId: user.nationalId,
-        gender: user.gender,
-        major: user.major,
-        id: user._id,
-      },
-      token,
-    });
+  res.status(StatusCodes.OK).json({
+    user: {
+      userType: user.userType,
+      email: user.email,
+      name: user.name,
+      track: user.track,
+      phoneNumber: user.phoneNumber,
+      nationalId: user.nationalId,
+      gender: user.gender,
+      major: user.major,
+      id: user._id,
+    },
+    token,
+  });
 };
 
 module.exports = {
