@@ -1,4 +1,7 @@
+const { NotFoundError } = require("../errors/not-found");
+const { param } = require("express/lib/router");
 const Form = require("../models/Form");
+const { StatusCodes } = require("http-status-codes");
 
 const createForm = async (req, res) => {
   try {
@@ -40,4 +43,14 @@ const getAllForms = async (req, res) => {
   }
 };
 
-module.exports = { createForm, getAllForms };
+const getForm = async (req, res) => {
+  const {
+    params: { id: formId },
+  } = req;
+  const form = await Form.findOne({ _id: formId });
+  if (!form) {
+    throw new NotFoundError(`No form was found with ID ${formId}`);
+  }
+  res.status(StatusCodes.OK).json(form);
+};
+module.exports = { createForm, getAllForms, getForm };
