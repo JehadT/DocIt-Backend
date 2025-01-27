@@ -5,7 +5,7 @@ const formSchema = new Schema({
   attachments: [
     {
       fileNumber: { type: Number, required: true },
-      filename: { type: String, required: true },
+      fileName: { type: String, required: true },
       path: { type: String, required: true },
     },
   ],

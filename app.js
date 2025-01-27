@@ -18,11 +18,14 @@ const authenticateUser = require("./middleware/authentication");
 const authRouter = require("./routes/auth");
 const userInfoRouter = require("./routes/userInfo");
 const formRouter = require("./routes/forms");
+const fileRouter = require('./routes/files')
 
 // routes
 app.use("/api/auth", authRouter);
 app.use("/api", authenticateUser, userInfoRouter);
 app.use("/api", authenticateUser, formRouter);
+app.use("/api", authenticateUser, fileRouter);
+
 
 // error handler
 const errorHandlerMiddleware = require("./middleware/error-handler");

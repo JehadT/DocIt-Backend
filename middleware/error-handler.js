@@ -19,7 +19,7 @@ const errorHandlerMiddleware = (err, req, res, next) => {
   }
 
   if (err.name === "CastError") {
-    customError.msg = `No record with id ${err.value}`;
+    customError.msg = `${err.value} is not found`;
     customError.statusCode = 404;
   }
   return res.status(customError.statusCode).json({ msg: customError.msg });

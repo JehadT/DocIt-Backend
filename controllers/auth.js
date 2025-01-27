@@ -3,8 +3,14 @@ const { StatusCodes } = require("http-status-codes");
 const { BadRequestError, UnauthenticatedError } = require("../errors");
 
 const register = async (req, res) => {
-  await User.create({ ...req.body });
-  res.status(StatusCodes.CREATED).send("User Created!");
+  try {
+    await User.create({ ...req.body });
+    res.status(StatusCodes.CREATED).send("User Created!");
+  } catch (error) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: error.message });
+  }
 };
 
 const login = async (req, res) => {
