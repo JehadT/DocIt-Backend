@@ -1,12 +1,16 @@
 const multer = require("multer");
 
+const fileNames = require("../utils/fileNames");
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/"); // Folder to store uploaded files
   },
   filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, file.fieldname + '-' + uniqueSuffix + '.pdf')
+    if (!req.fileIndex) req.fileIndex = 1;
+    const userName = req.user.name;
+    cb(null, fileNames[req.fileIndex] + " - " + userName + ".pdf");
+    req.fileIndex += 1;
   },
 });
 
@@ -24,4 +28,4 @@ const upload = multer({
   },
 });
 
-module.exports = upload.array("attachments", 20); // number of attchments
+module.exports = upload.array("attachments", 17); // number of attchments
