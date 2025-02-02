@@ -23,7 +23,6 @@ const downloadSingleFile = async (req, res) => {
       throw new NotFoundError("Attachment not found");
     }
     const filePath = path.resolve(filterFile.path);
-    console.log(fileNames);
     return res.download(filePath, filterFile.fileName, (err) => {
       if (err) {
         console.log(err);
