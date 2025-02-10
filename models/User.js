@@ -52,6 +52,10 @@ const UserSchema = new mongoose.Schema({
     type: String,
     maxlength: 125,
   },
+  hasSubmittedForm: {
+    type: Boolean,
+    default: false
+  }
 });
 
 UserSchema.pre("save", async function () {

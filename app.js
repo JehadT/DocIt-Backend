@@ -4,6 +4,7 @@ require("express-async-errors");
 const express = require("express");
 const app = express();
 
+
 // Middleware
 app.use(express.json());
 
@@ -18,7 +19,7 @@ const authenticateUser = require("./middleware/authentication");
 const authRouter = require("./routes/auth");
 const userInfoRouter = require("./routes/userInfo");
 const formRouter = require("./routes/forms");
-const fileRouter = require('./routes/files')
+const fileRouter = require("./routes/files");
 
 // routes
 app.use("/api/auth", authRouter);

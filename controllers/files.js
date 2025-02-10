@@ -3,7 +3,6 @@ const Form = require("../models/Form");
 const path = require("path");
 const zip = require("express-zip");
 
-
 const downloadSingleFile = async (req, res) => {
   try {
     const {
@@ -57,15 +56,18 @@ const downloadManyFiles = async (req, res) => {
       const fileName = files[file].fileName;
       result.push({ path: filePath, name: fileName });
     }
-    const traineeName = form.trainee.name;
     const traineeNationalId = form.trainee.nationalId;
     const traineeTrack = form.trainee.track;
-    return res.zip(result, `${traineeName} - ${traineeTrack} - ${traineeNationalId}.zip`, (err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({ error: "Something went wrong!" });
+    return res.zip(
+      result,
+      `${traineeNationalId} - ${traineeTrack}.zip`,
+      (err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({ error: "Something went wrong!" });
+        }
       }
-    });
+    );
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Something went wrong!" });

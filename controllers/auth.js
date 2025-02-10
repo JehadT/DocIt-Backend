@@ -38,6 +38,7 @@ const login = async (req, res) => {
       gender: user.gender,
       major: user.major,
       id: user._id,
+      hasSubmittedForm: user.hasSubmittedForm
     },
     token,
   });

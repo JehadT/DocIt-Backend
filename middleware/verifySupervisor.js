@@ -4,7 +4,7 @@ const verifySupervisor = (req, res, next) => {
   if (req.user.userType == 2) {
     return res
       .status(StatusCodes.UNAUTHORIZED)
-      .json({ error: "Only Supervisors can fetch forms" });
+      .json({ error: "This is only for Supervisors." });
   }
   next();
 };

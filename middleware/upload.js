@@ -10,7 +10,7 @@ const fileExtensions = {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "uploads/"); // Folder to store uploaded files
+    cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
     if (!req.fileIndex) req.fileIndex = 1;
@@ -18,13 +18,12 @@ const storage = multer.diskStorage({
     const userName = req.user.name;
     const extension = fileExtensions[file.mimetype];
 
-    const finalName = `${fileNames[req.fileIndex]} - ${userName}.${extension}`;
+    const finalName = `${userName} - ${fileNames[req.fileIndex]}.${extension}`;
     req.fileIndex += 1;
     cb(null, finalName);
   },
 });
 
-// Multer upload middleware
 const upload = multer({
   storage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
