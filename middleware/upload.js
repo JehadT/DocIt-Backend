@@ -36,7 +36,7 @@ const upload = multer({
     if (allowedTypes.includes(file.mimetype)) {
       cb(null, true);
     } else {
-      cb(new Error("Only PDF, Word and Excel files are allowed!"));
+      cb(new Error("الملفات المدعومة هي (PDF, Word, Excel)"));
     }
   },
 });
