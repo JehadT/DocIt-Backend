@@ -7,12 +7,8 @@ const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimiter = require("express-rate-limit");
 
-
 const express = require("express");
 const app = express();
-
-// frontend
-app.use(express.static("dist"))
 
 // Database
 const connectDB = require("./db/connect");
@@ -25,6 +21,7 @@ const authRouter = require("./routes/auth");
 const userInfoRouter = require("./routes/userInfo");
 const formRouter = require("./routes/forms");
 const fileRouter = require("./routes/files");
+const devRouter = require("./routes/dev");
 
 // error handler
 const errorHandlerMiddleware = require("./middleware/error-handler");
@@ -44,15 +41,14 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
-
 // routes
 app.use("/api/auth", authRouter);
 app.use("/api", authenticateUser, userInfoRouter);
 app.use("/api", authenticateUser, formRouter);
 app.use("/api", authenticateUser, fileRouter);
+app.use("/api", authenticateUser, devRouter);
 
 app.use(errorHandlerMiddleware);
-
 
 const port = process.env.PORT || 3000;
 

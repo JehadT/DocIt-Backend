@@ -13,11 +13,9 @@ const storage = multer.diskStorage({
     cb(null, "uploads/");
   },
   filename: (req, file, cb) => {
-    if (!req.fileIndex) req.fileIndex = 1;
-
+    if (!req.fileIndex) req.fileIndex = 1;    
     const userName = req.user.name;
     const extension = fileExtensions[file.mimetype];
-
     const finalName = `${userName} - ${fileNames[req.fileIndex]}.${extension}`;
     req.fileIndex += 1;
     cb(null, finalName);

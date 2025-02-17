@@ -2,6 +2,7 @@ const { NotFoundError } = require("../errors");
 const Form = require("../models/Form");
 const path = require("path");
 const zip = require("express-zip");
+const fs = require('fs')
 
 const downloadSingleFile = async (req, res) => {
   try {
@@ -47,30 +48,34 @@ const downloadManyFiles = async (req, res) => {
       throw new NotFoundError("Form not found");
     }
     const files = form.attachments;
-    if (!files) {
+    if (!files || files.length == 0) {
       throw new NotFoundError("No attachment was found");
     }
     var result = [];
-    for (const file in files) {
-      const filePath = path.resolve(files[file].path);
-      const fileName = files[file].fileName;
+    for (const file of files) {
+      const filePath = path.resolve(file.path);
+      const fileName = file.fileName;
+      if (!fs.existsSync(filePath)) {
+        return res.status(404).json({ error: "files not found" })      }
       result.push({ path: filePath, name: fileName });
+    }
+    if (result.length === 0) {
+      return res.status(404).json({ error: "No valid files to download" });
     }
     const traineeNationalId = form.trainee.nationalId;
     const traineeTrack = form.trainee.track;
-    return res.zip(
-      result,
-      `${traineeNationalId} - ${traineeTrack}.zip`,
-      (err) => {
-        if (err) {
-          console.log(err);
+    res.zip(result, `${traineeNationalId} - ${traineeTrack}.zip`, (err) => {
+      if (err) {
+        if (!res.headersSent) {
           return res.status(500).json({ error: "Something went wrong!" });
         }
       }
-    );
+    });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Something went wrong!" });
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Something went wrong!" });
+    }
   }
 };
 

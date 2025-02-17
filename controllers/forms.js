@@ -4,8 +4,8 @@ const { NotFoundError } = require("../errors");
 const { StatusCodes } = require("http-status-codes");
 
 const createForm = async (req, res) => {
-  if (!req.files || req.files.length !== 17) {
-    return res.status(400).json({ error: "Exactly 17 files must be uploaded" });
+  if (req.files.length < 16 || req.files.length > 17) {
+    return res.status(400).json({ error: "Number of files uploaded is not as required" });
   }
   const track = req.user.track;
   const trainee = req.user.userId;
@@ -14,6 +14,7 @@ const createForm = async (req, res) => {
     fileName: file.filename,
     path: file.path,
   }));
+  
   try {
     const newForm = await Form.create({
       attachments: files,
@@ -34,13 +35,13 @@ const createForm = async (req, res) => {
   }
 };
 
+
 const updateForm = async (req, res) => {
   const {
     params: { id: formId },
   } = req;
-
-  if (!req.files || req.files.length !== 17) {
-    return res.status(400).json({ error: "Exactly 17 files must be uploaded" });
+  if (!req.files || req.files.length > 17) {
+    return res.status(400).json({ error: "Highest upload is 17 files" });
   }
   const trainee = req.user.userId;
   const files = req.files.map((file, index) => ({
