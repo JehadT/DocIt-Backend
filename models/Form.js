@@ -8,6 +8,7 @@ const formSchema = new Schema(
         fileNumber: { type: Number, required: true },
         fileName: { type: String, required: true },
         path: { type: String, required: true },
+        isReturned: { type: String, default: false },
       },
     ],
     trainee: {
